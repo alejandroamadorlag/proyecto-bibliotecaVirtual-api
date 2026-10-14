@@ -70,25 +70,23 @@ class GenerosAllSerializer(serializers.ModelSerializer):
         depth = 1
 
 #Selializador de Libros
-class LibSerializer(serializers.ModelSerializer):
-    id = serializers.IntegerField(read_only=True)
-    id_libro = serializers.CharField(required=True)
-    titulo = serializers.CharField(required=True)
-
-    class Meta:
-        model = Libros
-        fields = ('id','id_libro','titulo')
-
 class LibroSerializer(serializers.ModelSerializer):
-    autor=AutoSerializer(read_only=True)
+    nombre_autor = serializers.SerializerMethodField()
+    nombre_genero = serializers.SerializerMethodField()
+
     class Meta:
         model = Libros
         fields = "__all__"
-class LibrosAllSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Libros
-        fields = '__all__'
-        depth = 1
+
+    def get_nombre_autor(self, obj):
+        autor = Autores.objects.filter(id=obj.id_autor).first()
+        if autor:
+            return f"{autor.first_name} {autor.last_name}"
+        return ""
+
+    def get_nombre_genero(self, obj):
+        genero = Generos.objects.filter(id=obj.id_genero).first()
+        return genero.nombre_genero if genero else ""
 
 #Selializador de Préstamos
 class PreSerializer(serializers.ModelSerializer):

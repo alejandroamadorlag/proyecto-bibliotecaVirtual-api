@@ -66,7 +66,7 @@ class LibroView(generics.CreateAPIView):
 
         return Response(libro, 200)
     
-    #Registrar nuevo usuario
+    #Registrar nuevo libro
     @transaction.atomic
     def post(self,request, *args, **kwargs):
 
