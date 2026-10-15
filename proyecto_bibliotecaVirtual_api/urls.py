@@ -63,6 +63,8 @@ urlpatterns = [
         path('lista-prestamos-cliente/', prestamos.PrestamoUserAll.as_view()),
      #Lista Hitorial de prestamos
         path('historial/', prestamos.HitorialAll.as_view()),
+    #Lista todos los libros
+        path('lista-libros-todos/', libros.LibrosTodos.as_view()),
     #Marcar un libro como inactivo
         path('libro-inactivo/', prestamos.LibroViewInactivo.as_view()),
     #Marcar un libro como Activo

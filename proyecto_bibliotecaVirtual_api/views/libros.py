@@ -107,3 +107,10 @@ class EditLibro(generics.CreateAPIView):
 
         libro = LibroSerializer(libro, many=False).data
         return Response(libro, 200)
+
+class LibrosTodos(generics.CreateAPIView):
+    permission_classes = (permissions.IsAuthenticated,)
+    def get(self, request, *args, **kwargs):
+        libro = Libros.objects.order_by("id_libro")   # SIN filtro de is_active
+        lista = LibroSerializer(libro, many=True).data
+        return Response(lista, 200)
