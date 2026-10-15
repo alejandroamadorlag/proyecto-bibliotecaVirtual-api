@@ -96,3 +96,14 @@ class DeleteLibro(generics.CreateAPIView):
         libros = LibroSerializer(libro, many=False).data
 
         return Response(libros,200)
+
+class EditLibro(generics.CreateAPIView):
+    def put(self, request, *args, **kwargs):
+        libro = get_object_or_404(Libros, id_libro=request.data["id_libro"])
+        libro.titulo    = request.data["titulo"]
+        libro.id_autor  = request.data["id_autor"]
+        libro.id_genero = request.data["id_genero"]
+        libro.save()
+
+        libro = LibroSerializer(libro, many=False).data
+        return Response(libro, 200)

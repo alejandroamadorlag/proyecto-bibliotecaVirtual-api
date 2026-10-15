@@ -113,3 +113,21 @@ class DeleteCliente(generics.CreateAPIView):
         generos = ClienteSerializer(cliente, many=False).data
 
         return Response(generos,200)
+
+class EditCliente(generics.CreateAPIView):
+    def put(self, request, *args, **kwargs):
+        cliente = get_object_or_404(Clientes, id=request.data["id"])
+
+        # Datos que viven en el User
+        user = cliente.user
+        user.first_name = request.data["first_name"]
+        user.last_name  = request.data["last_name"]
+        user.save()
+
+        # Datos que viven en Clientes
+        cliente.telefono  = request.data["telefono"]
+        cliente.direccion = request.data["direccion"]
+        cliente.save()
+
+        cliente = ClienteSerializer(cliente, many=False).data
+        return Response(cliente, 200)

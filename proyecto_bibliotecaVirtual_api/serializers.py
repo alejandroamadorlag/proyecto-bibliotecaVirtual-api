@@ -111,11 +111,21 @@ class PrestamosAllSerializer(serializers.ModelSerializer):
 
 class UsersListSerializer(serializers.ModelSerializer):
     rol = serializers.SerializerMethodField()
+    bibliotecario_id = serializers.SerializerMethodField()
+    cliente_id = serializers.SerializerMethodField()
 
     class Meta:
         model = User
-        fields = ('id', 'first_name', 'last_name', 'email', 'rol')
+        fields = ('id', 'first_name', 'last_name', 'email', 'rol', 'bibliotecario_id', 'cliente_id')
 
     def get_rol(self, obj):
         grupo = obj.groups.first()
         return grupo.name if grupo else ""
+
+    def get_bibliotecario_id(self, obj):
+        b = Bibliotecarios.objects.filter(user=obj).first()
+        return b.id if b else None
+
+    def get_cliente_id(self, obj):
+        c = Clientes.objects.filter(user=obj).first()
+        return c.id if c else None

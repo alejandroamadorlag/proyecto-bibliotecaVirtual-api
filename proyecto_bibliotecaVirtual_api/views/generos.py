@@ -74,3 +74,12 @@ class DeleteGenero(generics.CreateAPIView):
         generos = GeneroSerializer(genero, many=False).data
 
         return Response(generos,200)
+
+class EditGenero(generics.CreateAPIView):
+    def put(self, request, *args, **kwargs):
+        genero = get_object_or_404(Generos, id=request.data["id"])
+        genero.nombre_genero = request.data["nombre_genero"]
+        genero.save()
+
+        genero = GeneroSerializer(genero, many=False).data
+        return Response(genero, 200)

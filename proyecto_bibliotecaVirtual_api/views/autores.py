@@ -76,3 +76,14 @@ class DeleteAutor(generics.CreateAPIView):
         autores = AutorSerializer(autor, many=False).data
 
         return Response(autores,200)
+
+class EditAutor(generics.CreateAPIView):
+    def put(self, request, *args, **kwargs):
+        autor = get_object_or_404(Autores, id=request.data["id"])
+        autor.first_name   = request.data["first_name"]
+        autor.last_name    = request.data["last_name"]
+        autor.nacionalidad = request.data["nacionalidad"]
+        autor.save()
+
+        autor = AutorSerializer(autor, many=False).data
+        return Response(autor, 200)

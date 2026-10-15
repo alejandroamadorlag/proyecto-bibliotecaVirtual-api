@@ -113,3 +113,22 @@ class DeleteBiblio(generics.CreateAPIView):
         generos = BiblioSerializer(bibliotecario, many=False).data
 
         return Response(generos,200)
+
+class EditBiblio(generics.CreateAPIView):
+    def put(self, request, *args, **kwargs):
+        biblio = get_object_or_404(Bibliotecarios, id=request.data["id"])
+
+        # Datos del User
+        user = biblio.user
+        user.first_name = request.data["first_name"]
+        user.last_name  = request.data["last_name"]
+        user.save()
+
+        # Datos del Bibliotecario
+        biblio.telefono  = request.data["telefono"]
+        biblio.rfc       = request.data["rfc"]
+        biblio.direccion = request.data["direccion"]
+        biblio.save()
+
+        biblio = BiblioSerializer(biblio, many=False).data
+        return Response(biblio, 200)

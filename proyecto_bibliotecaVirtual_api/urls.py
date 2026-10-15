@@ -79,6 +79,16 @@ urlpatterns = [
         path('delete-libro/', libros.DeleteLibro.as_view()),
     #Delete Autor
         path('delete-autor/', autores.DeleteAutor.as_view()),
+    #Edit Autor
+        path('edit-autor/', autores.EditAutor.as_view()),
+    #Edit Genero
+        path('edit-genero/', generos.EditGenero.as_view()),
+    #Edit Libro
+        path('edit-libro/', libros.EditLibro.as_view()),
+    #Edit Cliente
+        path('edit-cliente/', clientes.EditCliente.as_view()),
+    #Edit Bibliotecario
+        path('edit-biblio/', users.EditBiblio.as_view()),
      #Incrementar prestamos realizados
         path('cliente-prestamos/', prestamos.CantidadPrestamosClienteView.as_view()),
     #Login
