@@ -44,7 +44,7 @@ class UsersAll(generics.CreateAPIView):
     permission_classes = (permissions.IsAuthenticated,)
     def get(self, request, *args, **kwargs):
         biblio = User.objects.filter(is_active = 1).order_by("id")
-        lista = UserSerializer(biblio, many=True).data
+        lista = UsersListSerializer(biblio, many=True).data
         
         return Response(lista, 200)
 

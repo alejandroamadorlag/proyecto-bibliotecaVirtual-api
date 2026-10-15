@@ -3,6 +3,7 @@ from rest_framework.authtoken.models import Token
 from proyecto_bibliotecaVirtual_api.models import *
 
 #Selializador de Usuarios
+
 class UserSerializer(serializers.ModelSerializer):
     id = serializers.IntegerField(read_only=True)
     first_name = serializers.CharField(required=True)
@@ -107,3 +108,14 @@ class PrestamosAllSerializer(serializers.ModelSerializer):
         model = Prestamos
         fields = '__all__'
         depth = 1
+
+class UsersListSerializer(serializers.ModelSerializer):
+    rol = serializers.SerializerMethodField()
+
+    class Meta:
+        model = User
+        fields = ('id', 'first_name', 'last_name', 'email', 'rol')
+
+    def get_rol(self, obj):
+        grupo = obj.groups.first()
+        return grupo.name if grupo else ""
