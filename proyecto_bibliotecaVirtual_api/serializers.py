@@ -90,24 +90,27 @@ class LibroSerializer(serializers.ModelSerializer):
         return genero.nombre_genero if genero else ""
 
 #Selializador de Préstamos
-class PreSerializer(serializers.ModelSerializer):
-    id = serializers.IntegerField(read_only=True)
-    fecha_prestamo = serializers.CharField(required=True)
-
-    class Meta:
-        model = Prestamos
-        fields = ('id','fecha_prestamo')
-
 class PrestamoSerializer(serializers.ModelSerializer):
-    prestamo=PreSerializer(read_only=True)
+    nombre_libro          = serializers.SerializerMethodField()
+    apellido_cliente      = serializers.SerializerMethodField()
+    apellido_bibliotecario = serializers.SerializerMethodField()
+
     class Meta:
         model = Prestamos
-        fields = "__all__"
-class PrestamosAllSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Prestamos
-        fields = '__all__'
-        depth = 1
+        fields = "__all__"   # incluye fechas, estado, is_active, etc.
+
+    def get_nombre_libro(self, obj):
+        libro = Libros.objects.filter(id_libro=obj.id_libro).first()
+        return libro.titulo if libro else ""
+
+    def get_apellido_cliente(self, obj):
+        cliente = Clientes.objects.filter(id=obj.id_cliente).first()
+        return cliente.user.last_name if cliente else ""
+
+    def get_apellido_bibliotecario(self, obj):
+        # id_bibliotecario guarda el User.id (lo que da getUserId en el front)
+        user = User.objects.filter(id=obj.id_bibliotecario).first()
+        return user.last_name if user else ""
 
 class UsersListSerializer(serializers.ModelSerializer):
     rol = serializers.SerializerMethodField()
