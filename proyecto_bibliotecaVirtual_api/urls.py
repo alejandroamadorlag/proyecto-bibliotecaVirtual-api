@@ -95,6 +95,8 @@ urlpatterns = [
         path('edit-biblio/', users.EditBiblio.as_view()),
      #Incrementar prestamos realizados
         path('cliente-prestamos/', prestamos.CantidadPrestamosClienteView.as_view()),
+    #Contadores
+        path('contadores/', bootstrap.DashboardContadores.as_view()),
     #Login
         path('token/', auth.CustomAuthToken.as_view()),
     #Logout

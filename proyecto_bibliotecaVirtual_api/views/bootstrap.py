@@ -40,3 +40,18 @@ class VersionView(generics.GenericAPIView):
     def get(self, request, *args, **kwargs):
 
         return Response({"version":"1.0.0"})
+
+
+class DashboardContadores(generics.GenericAPIView):
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def get(self, request, *args, **kwargs):
+        data = {
+            "total_libros":               Libros.objects.filter(is_active=1).count(),
+            "prestamos_proceso":          Prestamos.objects.filter(is_active=1).count(),
+            "clientes_registrados":       Clientes.objects.filter(user__is_active=1).count(),
+            "bibliotecarios_registrados": Bibliotecarios.objects.filter(user__is_active=1).count(),
+            "generos_registrados":        Generos.objects.filter(is_active=1).count(),
+            "autores_registrados":        Autores.objects.filter(is_active=1).count(),
+        }
+        return Response(data, 200)
