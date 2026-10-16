@@ -49,7 +49,7 @@ class CustomAuthToken(ObtainAuthToken):
             #Se crea el token de inicio de sesión
             token, created = Token.objects.get_or_create(user=user)
 
-            if role_names == 'Cliente':
+            if role_names == 'cliente':
                 cliente = Clientes.objects.filter(user=user).first()
                 cliente = ClienteSerializer(cliente).data
                 cliente["token"] = token.key
