@@ -29,11 +29,6 @@ from django.template.loader import render_to_string
 import string
 import random
 import json
-from proyecto_bibliotecaVirtual_api.puentes.mail import MailsBridge
-from proyecto_bibliotecaVirtual_api.file_storage.factory import FileStorageFactory
-from django.db import transaction
-from proyecto_bibliotecaVirtual_api.cypher_utils import CypherUtils
-from proyecto_bibliotecaVirtual_api.data_utils import DataUtils
 
 class VersionView(generics.GenericAPIView):
 

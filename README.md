@@ -207,7 +207,7 @@ proyecto-bibliotecaVirtual-api/
 ## 🔗 Frontend
 
 Este backend es consumido por el frontend del proyecto, desarrollado en **Angular 22**:
-_(agrega aquí el enlace a tu repositorio del frontend)_
+https://github.com/alejandroamadorlag/proyecto-bibliotecaVirtual-webapp.git
 
 ## 👤 Autor
 
