@@ -60,7 +60,8 @@ class Libros(models.Model):
     titulo = models.CharField(max_length=255,null=True, blank=True)
     id_autor = models.CharField(max_length=255,null=True, blank=True)
     id_genero = models.CharField(max_length=255,null=True, blank=True)
-    is_active = models.IntegerField(null=True, blank=True)
+    is_active = models.IntegerField(null=True, blank=True)  # Ocupado: 1 = disponible, 0 = prestado
+    eliminado = models.IntegerField(default=0, null=True, blank=True)   # Soft-Delete: 0 = visible, 1 = eliminado
     fecha_registro = models.CharField(max_length=255,null=True, blank=True)
     veces_prestado = models.IntegerField(null=True, blank=True)
     creation = models.DateTimeField(auto_now_add=True, null=True, blank=True)
@@ -71,14 +72,15 @@ class Libros(models.Model):
     
 class Prestamos(models.Model):
     id = models.BigAutoField(primary_key=True)
-    fecha_prestamo = models.CharField(max_length=255,null=True, blank=True)
-    fecha_devol_esperada = models.CharField(max_length=255,null=True, blank=True)
-    fecha_devol_real = models.CharField(max_length=255,null=True, blank=True)
-    id_bibliotecario = models.CharField(max_length=255,null=True, blank=True)
-    id_libro = models.CharField(max_length=255,null=True, blank=True)
-    id_cliente = models.CharField(max_length=255,null=True, blank=True)
-    estado = models.CharField(max_length=255,null=True, blank=True)
+    fecha_prestamo = models.CharField(max_length=255, null=True, blank=True)
+    fecha_devol_esperada = models.CharField(max_length=255, null=True, blank=True)
+    fecha_devol_real = models.CharField(max_length=255, null=True, blank=True)
+    id_bibliotecario = models.CharField(max_length=255, null=True, blank=True)
+    id_libro = models.CharField(max_length=255, null=True, blank=True)
+    id_cliente = models.CharField(max_length=255, null=True, blank=True)
+    estado = models.CharField(max_length=255, null=True, blank=True)
     is_active = models.IntegerField(null=True, blank=True)
+    eliminado = models.IntegerField(default=0, null=True, blank=True)   # ← baja lógica: 0 = visible, 1 = eliminado
     creation = models.DateTimeField(auto_now_add=True, null=True, blank=True)
     update = models.DateTimeField(null=True, blank=True)
 

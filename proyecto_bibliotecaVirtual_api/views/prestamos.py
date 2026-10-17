@@ -31,12 +31,10 @@ import random
 import json
 
 class PrestamoAllnoFilter(generics.CreateAPIView):
-    #Esta función es esencial para todo donde se requiera autorización de inicio de sesión (token)
     permission_classes = (permissions.IsAuthenticated,)
     def get(self, request, *args, **kwargs):
-        prestamo = Prestamos.objects.order_by("id")
+        prestamo = Prestamos.objects.exclude(eliminado=1).order_by("id")   # ← oculta los eliminados
         lista = PrestamoSerializer(prestamo, many=True).data
-        
         return Response(lista, 200)
 
 class HitorialAll(generics.CreateAPIView):
@@ -150,7 +148,17 @@ class PrestamosViewEdit(generics.CreateAPIView):
         presta = PrestamoSerializer(prestamo, many=False).data
 
         return Response(presta,200)
-    
+
+    # Soft-Delete (Baja lógica)
+    def delete(self, request, *args, **kwargs):
+        prestamo = get_object_or_404(Prestamos, id=request.GET.get("id"))
+        prestamo.eliminado = 1          # baja lógica: no se borra, solo se marca
+        prestamo.save()
+        return Response({"details": "Prestamo eliminado"}, 200)
+
+
+# Delete Real
+"""
     def delete(self, request, *args, **kwargs):
         prestamo = get_object_or_404(Prestamos, id=request.GET.get("id"))
         try:
@@ -158,3 +166,7 @@ class PrestamosViewEdit(generics.CreateAPIView):
             return Response({"details":"Prestamo eliminado"},200)
         except Exception as e:
             return Response({"details":"Algo pasó al eliminar"},400)
+
+"""
+# Soft-Delete (Baja lógica)
+

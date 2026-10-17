@@ -34,7 +34,7 @@ class LibroAllNoDisponible(generics.CreateAPIView):
     #Esta función es esencial para todo donde se requiera autorización de inicio de sesión (token)
     permission_classes = (permissions.IsAuthenticated,)
     def get(self, request, *args, **kwargs):
-        libro = Libros.objects.filter(is_active = 0).order_by("id_libro")
+        libro = Libros.objects.filter(is_active=0).exclude(eliminado=1).order_by("id_libro")
         lista = LibroSerializer(libro, many=True).data
         
         return Response(lista, 200)
@@ -43,7 +43,7 @@ class LibroAll(generics.CreateAPIView):
     #Esta función es esencial para todo donde se requiera autorización de inicio de sesión (token)
     permission_classes = (permissions.IsAuthenticated,)
     def get(self, request, *args, **kwargs):
-        libro = Libros.objects.filter(is_active = 1).order_by("id_libro")
+        libro = Libros.objects.filter(is_active=1).exclude(eliminado=1).order_by("id_libro")
         lista = LibroSerializer(libro, many=True).data
         
         return Response(lista, 200)
@@ -52,7 +52,7 @@ class LibrosPopularesAll(generics.CreateAPIView):
     #Esta función es esencial para todo donde se requiera autorización de inicio de sesión (token)
     permission_classes = (permissions.IsAuthenticated,)
     def get(self, request, *args, **kwargs):
-        libro = Libros.objects.order_by("-veces_prestado")[:5]
+        libro = Libros.objects.exclude(eliminado=1).order_by("-veces_prestado")[:5]
         lista = LibroSerializer(libro, many=True).data
         
         return Response(lista, 200)
@@ -91,7 +91,7 @@ class DeleteLibro(generics.CreateAPIView):
     def put(self, request, *args, **kwargs):
         # iduser=request.data["id"]
         libro = get_object_or_404(Libros, id_libro=request.GET.get("id_libro"))
-        libro.is_active = 0
+        libro.eliminado = 1
         libro.save()
         libros = LibroSerializer(libro, many=False).data
 
@@ -111,6 +111,6 @@ class EditLibro(generics.CreateAPIView):
 class LibrosTodos(generics.CreateAPIView):
     permission_classes = (permissions.IsAuthenticated,)
     def get(self, request, *args, **kwargs):
-        libro = Libros.objects.order_by("id_libro")   # SIN filtro de is_active
+        libro = Libros.objects.exclude(eliminado=1).order_by("id_libro")  # SIN filtro de is_active
         lista = LibroSerializer(libro, many=True).data
         return Response(lista, 200)
